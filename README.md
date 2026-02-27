@@ -1,4 +1,4 @@
-# Color-System---Mevivu
+# Color System - Mevivu
 # Figma Color Token Exporter
 
 ## Overview
@@ -133,26 +133,50 @@ This structure supports unlimited nesting depth under Semantic.
 
 ### Step 1 --- Prepare Variables
 
-1.  Open **Assets → Variables**
-2.  Create a collection (e.g., `Colors`)
-3.  Add primitive colors under `ColorRamp`
-4.  Add semantic tokens under `Semantic`
-5.  Configure Light and Dark modes if needed
+1.  Open you Figma file
+2.  Open **Assets → Variables**
+3.  Create a collection (e.g., `Colors`)
+4.  Add primitive colors under `ColorRamp`
+5.  Add semantic tokens under `Semantic`
+6.  Configure Light and Dark modes if needed
 
 ------------------------------------------------------------------------
 
-### Step 2 --- Run the Plugin
+### Step 2 --- Installation
 
-1.  Open your Figma file
-2.  Go to Plugins → Development → Your Plugin
-3.  Select export type:
+#### Option 1 — Download ZIP from GitHub
+
+1. Go to this repository on GitHub
+2. Click the green **Code** button
+3. Select **Download ZIP**
+4. Extract the ZIP file to your local machine
+
+---
+
+### Option 2 — Clone via Git
+
+If you use Git, run:
+
+```bash
+git clone git@github.com:phuc1903/Color-System---Mevivu.git
+```
+
+------------------------------------------------------------------------
+
+### Step 3 --- Import and the run plugin
+
+1.  Open you Figma file
+2.  Go to Main menu -> Plugins -> Development -> Import plugin from manifest...
+3.  Select manifest.js
+4.  Select Plugin -> Select Plugin
+5.  Select export type:
     -   Mobile (Flutter)
     -   Web (CSS)
-4.  Copy the generated output
+6.  Copy the generated output
 
 ------------------------------------------------------------------------
 
-### Step 3 --- Integrate Into Your Project
+### Step 4 --- Integrate Into Your Project
 
 For Web:
 
