@@ -1,0 +1,8 @@
+{
+  "name": "Export Color System – Mevivu",
+  "id": "1600737316950447887",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"]
+}
