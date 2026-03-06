@@ -10,8 +10,7 @@
       margin: 0;
       padding: 16px;
       font-family: Inter, system-ui, sans-serif;
-      background: #ffffff;
-      color: #000000;
+      background: #fff;
     }
 
     .wrapper {
@@ -20,12 +19,11 @@
     }
 
     h3 {
-      margin: 0 0 12px 0;
-      font-size: 16px;
       text-align: center;
+      margin-bottom: 12px;
     }
 
-    .format-select {
+    .tabs {
       display: flex;
       gap: 8px;
       margin-bottom: 12px;
@@ -33,9 +31,9 @@
 
     button {
       flex: 1;
-      padding: 12px 24px;
-      border-radius: 6px;
+      padding: 12px;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
       background: #e0e0e0;
@@ -43,12 +41,12 @@
 
     button.active {
       background: #02BAD3;
-      color: #ffffff;
+      color: white;
     }
 
     textarea {
       width: 100%;
-      height: 380px;
+      height: 360px;
       resize: none;
       padding: 10px;
       font-family: ui-monospace, monospace;
@@ -56,6 +54,19 @@
       border: 1px solid #333;
       border-radius: 6px;
       white-space: pre;
+    }
+
+    .mode-wrapper {
+      display: flex;
+      gap: 24px;
+      padding: 18px 0;
+    }
+
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
     }
 
     .actions {
@@ -82,12 +93,27 @@
 
     <h3>Export Color System</h3>
 
-    <div class="format-select">
+    <div class="tabs">
       <button id="mobile" class="active">Mobile (Flutter)</button>
       <button id="web">Web (CSS)</button>
     </div>
 
     <textarea id="output" spellcheck="false"></textarea>
+
+    <div class="mode-wrapper">
+
+      <label class="form-check">
+        <input type="radio" name="mode" value="light" checked>
+        Light Mode
+      </label>
+
+      <label class="form-check">
+        <input type="radio" name="mode" value="dark">
+        Dark Mode
+      </label>
+
+    </div>
+
     <div class="actions">
       <button id="copy">Copy</button>
     </div>
@@ -97,37 +123,70 @@
   </div>
 
   <script>
-    const textarea = document.getElementById('output');
-    const mobileBtn = document.getElementById('mobile');
-    const webBtn = document.getElementById('web');
 
-    function setActive(btn) {
-      mobileBtn.classList.remove('active');
-      webBtn.classList.remove('active');
-      btn.classList.add('active');
+    let currentPlatform = "mobile"
+    let currentMode = "light"
+    let cache = { light: "", dark: "" }
+
+    const textarea = document.getElementById("output")
+
+    const mobileBtn = document.getElementById("mobile")
+    const webBtn = document.getElementById("web")
+
+    const radios = document.querySelectorAll('input[name="mode"]')
+
+    function setPlatform(btn, type) {
+
+      mobileBtn.classList.remove("active")
+      webBtn.classList.remove("active")
+
+      btn.classList.add("active")
+
+      currentPlatform = type
+
+      parent.postMessage({ pluginMessage: { type: type } }, "*")
+
     }
 
-    mobileBtn.onclick = () => {
-      setActive(mobileBtn);
-      parent.postMessage({ pluginMessage: { type: 'mobile' } }, '*');
-    };
+    mobileBtn.onclick = () => setPlatform(mobileBtn, "mobile")
+    webBtn.onclick = () => setPlatform(webBtn, "web")
 
-    webBtn.onclick = () => {
-      setActive(webBtn);
-      parent.postMessage({ pluginMessage: { type: 'web' } }, '*');
-    };
+    /* MODE CHANGE */
+
+    radios.forEach(radio => {
+
+      radio.addEventListener("change", () => {
+
+        currentMode = radio.value
+        textarea.value = cache[currentMode] || ""
+
+      })
+
+    })
+
+    /* RECEIVE MESSAGE */
 
     onmessage = (event) => {
-      textarea.value = event.data.pluginMessage || '';
-    };
 
-    document.getElementById('copy').onclick = () => {
-      textarea.select();
-      document.execCommand('copy');
-    };
+      cache = event.data.pluginMessage
 
-    // default load
-    mobileBtn.click();
+      textarea.value = cache[currentMode] || ""
+
+    }
+
+    /* COPY */
+
+    document.getElementById("copy").onclick = () => {
+
+      textarea.select()
+      document.execCommand("copy")
+
+    }
+
+    /* DEFAULT LOAD */
+
+    mobileBtn.click()
+
   </script>
 
 </body>
