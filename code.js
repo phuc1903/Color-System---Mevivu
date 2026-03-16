@@ -9,7 +9,7 @@ const collections = figma.variables.getLocalVariableCollections();
 const COLLECTION_NAME = 'Colors';
 const GROUP_COLOR_RAMP = 'ColorRamp';
 const GROUP_SEMANTIC = 'Semantic';
-const KEY_COLORRAMP = 'a';
+
 
 /* =============================
    UTILITIES
@@ -144,24 +144,7 @@ function emitSemanticTree(node, indent = 2) {
   return out;
 }
 
-function emitClass(name, node, indent) {
-  const pad = ' '.repeat(indent);
-  let out = `${pad}class ${pascal(name)} {\n`;
 
-  for (const key in node) {
-    const value = node[key];
-
-    if (typeof value === 'string') {
-      const field = /^\d/.test(key) ? `${KEY_COLORRAMP}${key}` : camel(key);
-      out += `${pad}  static const Color ${field} = ${value};\n`;
-    } else {
-      out += emitClass(key, value, indent + 2);
-    }
-  }
-
-  out += `${pad}}\n\n`;
-  return out;
-}
 
 function buildDart(collection, mode) {
 
